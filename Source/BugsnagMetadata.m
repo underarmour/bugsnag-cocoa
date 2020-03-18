@@ -30,6 +30,7 @@
 
 @interface BugsnagMetadata ()
 @property(atomic, strong) NSMutableDictionary *dictionary;
+@property NSMutableSet<id<BugsnagMetadataDelegate>>* _Nullable delegates;
 @end
 
 @implementation BugsnagMetadata
@@ -43,8 +44,19 @@
     if (self = [super init]) {
         self.dictionary = dict;
     }
-    [self.delegate metadataChanged:self];
+    self.delegates = [NSMutableSet new];
+    [self informDelegates];
     return self;
+}
+
+- (void)addDelegate:(id<BugsnagMetadataDelegate>_Nonnull)delegate {
+    [self.delegates addObject:delegate];
+}
+
+- (void)informDelegates {
+    for (id<BugsnagMetadataDelegate> delegate in self.delegates) {
+        [delegate metadataChanged:self];
+    }
 }
 
 // MARK: - <NSMutableCopying>
@@ -74,7 +86,7 @@
     @synchronized(self) {
         [self.dictionary removeObjectForKey:sectionName];
     }
-    [self.delegate metadataChanged:self];
+    [self informDelegates];
 }
 
 - (void)clearMetadataInSection:(NSString *)section
@@ -85,7 +97,7 @@
             [[[self dictionary] objectForKey:section] removeObjectForKey:key];
         }
     }
-    [self.delegate metadataChanged:self];
+    [self informDelegates];
 }
 
 - (NSDictionary *)toDictionary {
@@ -131,7 +143,7 @@
     
     // Call the delegate if we've materially changed it
     if (metadataChanged) {
-        [self.delegate metadataChanged:self];
+        [self informDelegates];
     }
 }
 
@@ -191,7 +203,7 @@
             
             // Call the delegate if we've materially changed it
             if (metadataChanged) {
-                [self.delegate metadataChanged:self];
+                [self informDelegates];
             }
         }
     }

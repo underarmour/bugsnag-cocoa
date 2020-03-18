@@ -142,6 +142,8 @@
 		E76617CF1F4E459C0094CECF /* BSG_RFC3339DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E76617631F4E459C0094CECF /* BSG_RFC3339DateTool.m */; };
 		E76617D01F4E459C0094CECF /* BSG_KSCrashReportFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = E76617661F4E459C0094CECF /* BSG_KSCrashReportFilter.h */; };
 		E76617D11F4E459C0094CECF /* BSG_KSCrashReportFilterCompletion.h in Headers */ = {isa = PBXBuildFile; fileRef = E76617671F4E459C0094CECF /* BSG_KSCrashReportFilterCompletion.h */; };
+		E786059824229A6E00CC2D28 /* BugsnagStateEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = E786059624229A6E00CC2D28 /* BugsnagStateEvent.m */; };
+		E786059924229A6E00CC2D28 /* BugsnagStateEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = E786059724229A6E00CC2D28 /* BugsnagStateEvent.h */; };
 		E79148771FD82E6D003EFEBF /* BugsnagSession.h in Headers */ = {isa = PBXBuildFile; fileRef = E79148641FD82E6A003EFEBF /* BugsnagSession.h */; };
 		E79148781FD82E6D003EFEBF /* BugsnagKSCrashSysInfoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = E79148651FD82E6A003EFEBF /* BugsnagKSCrashSysInfoParser.h */; };
 		E79148791FD82E6D003EFEBF /* BugsnagUser.h in Headers */ = {isa = PBXBuildFile; fileRef = E79148661FD82E6A003EFEBF /* BugsnagUser.h */; };
@@ -340,6 +342,8 @@
 		E76617631F4E459C0094CECF /* BSG_RFC3339DateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BSG_RFC3339DateTool.m; path = ../Source/KSCrash/Source/KSCrash/Recording/Tools/BSG_RFC3339DateTool.m; sourceTree = SOURCE_ROOT; };
 		E76617661F4E459C0094CECF /* BSG_KSCrashReportFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSG_KSCrashReportFilter.h; path = ../Source/KSCrash/Source/KSCrash/Reporting/Filters/BSG_KSCrashReportFilter.h; sourceTree = SOURCE_ROOT; };
 		E76617671F4E459C0094CECF /* BSG_KSCrashReportFilterCompletion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSG_KSCrashReportFilterCompletion.h; path = ../Source/KSCrash/Source/KSCrash/Reporting/Filters/BSG_KSCrashReportFilterCompletion.h; sourceTree = SOURCE_ROOT; };
+		E786059624229A6E00CC2D28 /* BugsnagStateEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BugsnagStateEvent.m; path = ../Source/BugsnagStateEvent.m; sourceTree = "<group>"; };
+		E786059724229A6E00CC2D28 /* BugsnagStateEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugsnagStateEvent.h; path = ../Source/BugsnagStateEvent.h; sourceTree = "<group>"; };
 		E79148641FD82E6A003EFEBF /* BugsnagSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugsnagSession.h; path = ../Source/BugsnagSession.h; sourceTree = "<group>"; };
 		E79148651FD82E6A003EFEBF /* BugsnagKSCrashSysInfoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugsnagKSCrashSysInfoParser.h; path = ../Source/BugsnagKSCrashSysInfoParser.h; sourceTree = "<group>"; };
 		E79148661FD82E6A003EFEBF /* BugsnagUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BugsnagUser.h; path = ../Source/BugsnagUser.h; sourceTree = "<group>"; };
@@ -443,6 +447,8 @@
 		8A8D51261D41343500D33797 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
+				E786059724229A6E00CC2D28 /* BugsnagStateEvent.h */,
+				E786059624229A6E00CC2D28 /* BugsnagStateEvent.m */,
 				E72AE1FB241A4ED600ED8972 /* BugsnagPluginClient.h */,
 				E72AE1FC241A4ED600ED8972 /* BugsnagPluginClient.m */,
 				0089B6ED241168CB00D5A7F2 /* BugsnagClient.h */,
@@ -752,6 +758,7 @@
 				E76617AA1F4E459C0094CECF /* BSG_KSDynamicLinker.h in Headers */,
 				E76617B41F4E459C0094CECF /* BSG_KSMach.h in Headers */,
 				E76617AF1F4E459C0094CECF /* BSG_KSJSONCodecObjC.h in Headers */,
+				E786059924229A6E00CC2D28 /* BugsnagStateEvent.h in Headers */,
 				E791487B1FD82E6D003EFEBF /* BugsnagSessionFileStore.h in Headers */,
 				E76617B11F4E459C0094CECF /* BSG_KSLogger.h in Headers */,
 				8AD9A4F51D42EE87004E1CC5 /* Bugsnag.h in Headers */,
@@ -956,6 +963,7 @@
 				E76616FA1F4E45950094CECF /* BugsnagErrorReportApiClient.m in Sources */,
 				E76617AD1F4E459C0094CECF /* BSG_KSJSONCodec.c in Sources */,
 				E766179D1F4E459C0094CECF /* BSG_KSCrashSentry_NSException.m in Sources */,
+				E786059824229A6E00CC2D28 /* BugsnagStateEvent.m in Sources */,
 				E76617851F4E459C0094CECF /* BSG_KSCrashReport.c in Sources */,
 				8AD9A5021D42EEB0004E1CC5 /* BugsnagMetadata.m in Sources */,
 				E766179A1F4E459C0094CECF /* BSG_KSCrashSentry_MachException.c in Sources */,

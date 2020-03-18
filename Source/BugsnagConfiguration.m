@@ -33,6 +33,8 @@
 #import "BugsnagSessionTracker.h"
 #import "BugsnagLogger.h"
 #import "BSG_SSKeychain.h"
+#import "BugsnagStateEvent.h"
+#import "BugsnagCollections.h"
 
 static NSString *const kHeaderApiPayloadVersion = @"Bugsnag-Payload-Version";
 static NSString *const kHeaderApiKey = @"Bugsnag-Api-Key";
@@ -48,12 +50,18 @@ NSString * const kBugsnagUserEmailAddress = @"BugsnagUserEmailAddress";
 NSString * const kBugsnagUserName = @"BugsnagUserName";
 NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
 
+typedef void (^BugsnagObserverBlock)(BugsnagStateEvent *_Nonnull event);
+
 @interface Bugsnag ()
 + (BugsnagClient *)client;
 @end
 
 @interface BugsnagClient ()
 @property BugsnagSessionTracker *sessionTracker;
+@end
+
+@interface BugsnagMetadata ()
+@property(atomic, strong) NSMutableDictionary *dictionary;
 @end
 
 @interface BugsnagConfiguration ()
@@ -67,6 +75,7 @@ NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
  *  Hooks for modifying sessions before they are sent to Bugsnag. Intended for internal use only by React Native/Unity.
  */
 @property(nonatomic, readwrite, strong) NSMutableArray *onSessionBlocks;
+@property(nonatomic, readwrite, strong) BugsnagObserverBlock block;
 @property(nonatomic, readwrite, strong) NSMutableSet *plugins;
 @end
 
@@ -158,6 +167,7 @@ NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
         _releaseStage = BSGKeyProduction;
     #endif
     
+    [self.metadata addDelegate:self];
     return self;
 }
 
@@ -182,6 +192,12 @@ NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
     
     // Add user info to the metadata
     [self setUserMetadataFromUser:self.currentUser];
+
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    BSGDictInsertIfNotNil(dict, self.currentUser.userId, @"id");
+    BSGDictInsertIfNotNil(dict, self.currentUser.emailAddress, @"email");
+    BSGDictInsertIfNotNil(dict, self.currentUser.name, @"name");
+    [self notifyObserver:[[BugsnagStateEvent alloc] initWithName:kStateEventUser data:dict]];
 }
 
 /**
@@ -460,6 +476,7 @@ NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
         [self.config addAttribute:BSGKeyContext
                         withValue:newContext
                     toTabWithName:BSGKeyConfig];
+        [self notifyObserver:[[BugsnagStateEvent alloc] initWithName:kStateEventContext data:newContext]];
     }
 }
 
@@ -502,6 +519,21 @@ NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
 
 - (void)addPlugin:(id<BugsnagPlugin> _Nonnull)plugin {
     [_plugins addObject:plugin];
+}
+
+- (void)notifyObserver:(BugsnagStateEvent *)event {
+    if (self.block != nil) {
+        self.block(event);
+    }
+}
+
+- (void)registerStateObserverWithBlock:(BugsnagObserverBlock _Nonnull)block {
+    self.block = block;
+}
+
+- (void)metadataChanged:(BugsnagMetadata *_Nonnull)metadata {
+    NSDictionary *data = [metadata.dictionary copy];
+    [self notifyObserver:[[BugsnagStateEvent alloc] initWithName:kStateEventMetadata data:data]];
 }
 
 @end

@@ -45,8 +45,7 @@
 
 -(void) setUp {
     metadata = [[BugsnagMetadata alloc] init];
-    XCTAssertNil([metadata delegate]);
-    metadata.delegate = self;
+    [metadata addDelegate:self];
 }
 
 - (void)test_addAttribute_withName_creation {
@@ -54,9 +53,6 @@
     // Creation
     delegateCalled = NO;
     XCTAssertNotNil(metadata);
-    XCTAssertFalse(delegateCalled, "Did not expect the delegate's metadataChanged: method to be called.");
-    
-    XCTAssertNotNil([metadata delegate]);
     XCTAssertFalse(delegateCalled, "Did not expect the delegate's metadataChanged: method to be called.");
 }
 
@@ -156,7 +152,7 @@
     
     // Check delegate method gets called
     delegateCalled = NO;
-    metadata.delegate = self;
+    [metadata addDelegate:self];
     [metadata addMetadataToSection:@"OtherTab" values:@{@"key" : @"value"}];
     XCTAssertTrue(delegateCalled, "Expected the delegate's metadataChanged: method to be called.");
     delegateCalled = NO;
@@ -180,7 +176,7 @@
     
     // Once more with a delegate
     delegateCalled = NO;
-    metadata.delegate = self;
+    [metadata addDelegate:self];
     [metadata addMetadataToSection:@"invalidKeyTab" values:@{dummyObj : @"someValue"}];
     XCTAssertEqual(metadata.dictionary.count, 0);
     XCTAssertFalse(delegateCalled);

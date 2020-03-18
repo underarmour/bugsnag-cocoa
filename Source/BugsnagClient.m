@@ -254,9 +254,8 @@ void BSGWriteSessionCrashData(BugsnagSession *session) {
         }
 
         self.metadataLock = [[NSLock alloc] init];
-        self.configuration.metadata.delegate = self;
-        self.configuration.config.delegate = self;
-        self.state.delegate = self;
+        [self.configuration.metadata addDelegate:self];
+        [self.state addDelegate:self];
         self.crashSentry = [BugsnagCrashSentry new];
         self.errorReportApiClient = [[BugsnagErrorReportApiClient alloc] initWithConfig:configuration
                                                                               queueName:@"Error API queue"];

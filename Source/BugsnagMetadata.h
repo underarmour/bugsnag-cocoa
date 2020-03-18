@@ -77,7 +77,7 @@
            withValue:(id _Nullable)value
        toTabWithName:(NSString *_Nonnull)sectionName;
 
-@property(unsafe_unretained) id<BugsnagMetadataDelegate> _Nullable delegate;
+- (void)addDelegate:(id<BugsnagMetadataDelegate>_Nonnull)delegate;
 
 /**
  * Merge supplied and existing metadata.
